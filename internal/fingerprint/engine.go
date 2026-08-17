@@ -32,6 +32,7 @@ type Rule struct {
 	OSPattern      string  `json:"os_pattern"`
 	OSGroup        int     `json:"os_group"`
 	Confidence     float64 `json:"confidence"`
+	Ports          []int   `json:"ports"`
 
 	match        *regexp.Regexp
 	versionMatch *regexp.Regexp
@@ -71,6 +72,11 @@ func Load(path string) (*Engine, error) {
 		if rule.Confidence < 0 || rule.Confidence > 1 {
 			return nil, fmt.Errorf("rule %q confidence must be between 0 and 1", rule.Name)
 		}
+		for _, port := range rule.Ports {
+			if port < 1 || port > 65535 {
+				return nil, fmt.Errorf("rule %q has invalid port %d", rule.Name, port)
+			}
+		}
 		if rule.match, err = regexp.Compile(rule.Pattern); err != nil {
 			return nil, fmt.Errorf("compile rule %q: %w", rule.Name, err)
 		}
@@ -101,6 +107,9 @@ func (e *Engine) Identify(input model.BannerInput) model.FingerprintResult {
 	}
 	banner := strings.TrimSpace(input.Banner)
 	for _, rule := range e.rules {
+		if len(rule.Ports) > 0 && !containsPort(rule.Ports, input.Port) {
+			continue
+		}
 		if !rule.match.MatchString(banner) {
 			continue
 		}
@@ -122,6 +131,15 @@ func (e *Engine) Identify(input model.BannerInput) model.FingerprintResult {
 		result.Confidence = clamp(hint.Confidence)
 	}
 	return result
+}
+
+func containsPort(ports []int, wanted int) bool {
+	for _, port := range ports {
+		if port == wanted {
+			return true
+		}
+	}
+	return false
 }
 
 func capture(pattern *regexp.Regexp, value string, group int) string {

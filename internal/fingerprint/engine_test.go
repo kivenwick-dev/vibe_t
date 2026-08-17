@@ -30,6 +30,7 @@ func TestIdentifyExamples(t *testing.T) {
 		{"redis", model.BannerInput{Port: 6379, Banner: "+PONG"}, "Redis", "Redis", "", ""},
 		{"ftp", model.BannerInput{Port: 21, Banner: "220 ProFTPD 1.3.7 Server"}, "FTP", "ProFTPD", "1.3.7", ""},
 		{"unknown", model.BannerInput{Port: 1234, Banner: "opaque service"}, "unknown", "", "", ""},
+		{"version-is-not-mysql", model.BannerInput{Port: 9999, Banner: "build 8.0.32"}, "unknown", "", "", ""},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

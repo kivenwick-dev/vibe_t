@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"banner-fingerprint/internal/model"
@@ -32,7 +33,8 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	request, err := http.NewRequestWithContext(ctx, http.MethodPost, *server+"/fingerprint", bytes.NewReader(payload))
+	endpoint := strings.TrimRight(*server, "/") + "/fingerprint"
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, endpoint, bytes.NewReader(payload))
 	if err != nil {
 		fatal(err)
 	}
