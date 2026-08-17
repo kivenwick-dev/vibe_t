@@ -1,0 +1,121 @@
+{
+  "port_hints": {
+    "21": {"protocol": "FTP", "product": "", "confidence": 0.35},
+    "22": {"protocol": "SSH", "product": "", "confidence": 0.35},
+    "80": {"protocol": "HTTP", "product": "", "confidence": 0.3},
+    "443": {"protocol": "HTTP", "product": "", "confidence": 0.3},
+    "3306": {"protocol": "MySQL", "product": "MySQL", "confidence": 0.55},
+    "6379": {"protocol": "Redis", "product": "Redis", "confidence": 0.7},
+    "8443": {"protocol": "HTTP", "product": "", "confidence": 0.3},
+    "8888": {"protocol": "HTTP", "product": "", "confidence": 0.3},
+    "8080": {"protocol": "HTTP", "product": "", "confidence": 0.3}
+  },
+  "rules": [
+    {
+      "name": "openssh",
+      "protocol": "SSH",
+      "product": "OpenSSH",
+      "pattern": "(?i)^SSH-[0-9.]+-OpenSSH[_ -]([0-9][^\\s-]*)",
+      "version_pattern": "(?i)^SSH-[0-9.]+-OpenSSH[_ -]([0-9][^\\s-]*)",
+      "version_group": 1,
+      "os_pattern": "(?i)\\b(Ubuntu|Debian|CentOS|Red Hat|Alpine|FreeBSD)\\b",
+      "os_group": 1,
+      "confidence": 0.95
+    },
+    {
+      "name": "proftpd",
+      "protocol": "FTP",
+      "product": "ProFTPD",
+      "pattern": "(?i)\\b220[- ]+.*ProFTPD[/ ]([0-9][^\\s]*)",
+      "version_pattern": "(?i)ProFTPD[/ ]([0-9][^\\s]*)",
+      "version_group": 1,
+      "confidence": 0.9
+    },
+    {
+      "name": "vsftpd",
+      "protocol": "FTP",
+      "product": "vsftpd",
+      "pattern": "(?i)\\bvsFTPd\\s+([0-9]+(?:\\.[0-9]+){1,2})",
+      "version_pattern": "(?i)\\bvsFTPd\\s+([0-9]+(?:\\.[0-9]+){1,2})",
+      "version_group": 1,
+      "confidence": 0.9
+    },
+    {
+      "name": "pure-ftpd",
+      "protocol": "FTP",
+      "product": "Pure-FTPd",
+      "pattern": "(?i)\\bPure-FTPd\\b",
+      "confidence": 0.85
+    },
+    {
+      "name": "nginx",
+      "protocol": "HTTP",
+      "product": "nginx",
+      "pattern": "(?i)\\bServer:\\s*nginx[/ ]?([0-9.]*)",
+      "version_pattern": "(?i)\\bServer:\\s*nginx[/ ]?([0-9.]+)",
+      "version_group": 1,
+      "confidence": 0.9
+    },
+    {
+      "name": "apache",
+      "protocol": "HTTP",
+      "product": "Apache",
+      "pattern": "(?i)\\bServer:\\s*Apache[/ ]?([0-9.]*)",
+      "version_pattern": "(?i)\\bServer:\\s*Apache[/ ]?([0-9.]+)",
+      "version_group": 1,
+      "confidence": 0.9
+    },
+    {
+      "name": "jetty",
+      "protocol": "HTTP",
+      "product": "Jetty",
+      "pattern": "(?i)\\bServer:\\s*(?:Jetty|Eclipse Jetty)[/( ]?([0-9]+(?:\\.[0-9]+){1,2})",
+      "version_pattern": "(?i)\\bServer:\\s*(?:Jetty|Eclipse Jetty)[/( ]?([0-9]+(?:\\.[0-9]+){1,2})",
+      "version_group": 1,
+      "confidence": 0.85
+    },
+    {
+      "name": "iis",
+      "protocol": "HTTP",
+      "product": "Microsoft-IIS",
+      "pattern": "(?i)\\bServer:\\s*Microsoft-IIS/([0-9.]+)",
+      "version_pattern": "(?i)\\bServer:\\s*Microsoft-IIS/([0-9.]+)",
+      "version_group": 1,
+      "confidence": 0.9
+    },
+    {
+      "name": "mysql",
+      "protocol": "MySQL",
+      "product": "MySQL",
+      "pattern": "(?i)(?:mysql|mariadb)[/ _-]?([0-9]+(?:\\.[0-9]+){1,2})",
+      "version_pattern": "(?i)(?:mysql|mariadb)[/ _-]?([0-9]+(?:\\.[0-9]+){1,2})",
+      "version_group": 1,
+      "confidence": 0.9
+    },
+    {
+      "name": "mysql-greeting",
+      "protocol": "MySQL",
+      "product": "MySQL",
+      "pattern": "(?i)\\b(8\\.[0-9]+\\.[0-9]+|5\\.[0-9]+\\.[0-9]+)\\b",
+      "version_pattern": "(?i)\\b(8\\.[0-9]+\\.[0-9]+|5\\.[0-9]+\\.[0-9]+)\\b",
+      "version_group": 1,
+      "confidence": 0.82
+    },
+    {
+      "name": "redis",
+      "protocol": "Redis",
+      "product": "Redis",
+      "pattern": "(?i)(?:redis_version:([0-9.]+)|^[+\\-:](?:PONG|ERR|OK|NOAUTH))",
+      "version_pattern": "(?i)redis_version:([0-9.]+)",
+      "version_group": 1,
+      "confidence": 0.85
+    },
+    {
+      "name": "generic-http",
+      "protocol": "HTTP",
+      "product": "",
+      "pattern": "(?i)^(?:HTTP/[12](?:\\.[01])?\\s+|[A-Z]+\\s+https?://)",
+      "confidence": 0.75
+    }
+  ]
+}

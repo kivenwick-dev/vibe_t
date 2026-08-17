@@ -1,0 +1,52 @@
+services:
+  server:
+    build:
+      context: .
+      target: runtime
+    image: banner-fingerprint:local
+    environment:
+      LISTEN_ADDR: ":8080"
+      RULES_PATH: "/app/rules/rules.json"
+    expose:
+      - "8080"
+    ports:
+      - "127.0.0.1:8080:8080"
+    networks:
+      - fingerprint
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--quiet", "http://127.0.0.1:8080/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 2s
+
+  client:
+    build:
+      context: .
+      target: runtime
+    image: banner-fingerprint:local
+    entrypoint: ["/app/banner-client"]
+    command: ["--server", "http://server:8080", "--input", "/data/sample.json", "--pretty"]
+    volumes:
+      - ./testdata/sample.json:/data/sample.json:ro
+    networks:
+      - fingerprint
+    depends_on:
+      server:
+        condition: service_healthy
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  fingerprint:
+    driver: bridge

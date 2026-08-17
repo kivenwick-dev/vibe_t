@@ -1,0 +1,23 @@
+# Banner Fingerprint MVP 执行文档
+
+- [x] 确认空仓库，确定从零搭建
+- [x] 设计 server/client 责任边界
+- [x] 定义输入输出 JSON 模型
+- [x] 创建 Go 项目和命令入口
+- [x] 实现规则文件加载与正则匹配
+- [x] 实现 SSH、HTTP、MySQL、Redis、FTP 识别
+- [x] 实现未知 Banner 降级为 `protocol: "unknown"`
+- [x] 实现 `POST /fingerprint`
+- [x] 实现 `GET /health`
+- [x] 实现独立 client 读取本地 JSON 并请求 server
+- [x] 添加示例输入数据
+- [x] 使用 `testdata/self-test.json` 完成 20 条自测批次
+- [x] 验证核心识别结果与 `unknown` 降级行为
+- [x] 添加多阶段 Dockerfile
+- [x] 添加非 root、只读文件系统、丢弃 capabilities 等运行限制
+- [x] 添加 Compose 内部网络和 server 健康依赖
+- [x] 修复并通过全部单元测试（`go test ./...`）
+- [x] 通过 `go vet ./...` 和 Linux/静态编译验证
+- [x] 完成本地 client 识别演示
+- [x] 完成 Docker Compose 构建与启动验证（server healthy，client 退出码 0）
+- [x] 更新最终运行说明
