@@ -62,3 +62,11 @@ curl -X POST http://localhost:8080/fingerprint \
 ```
 
 无法识别的输入会返回 `protocol: "unknown"`、空产品和版本字段以及 `confidence: 0`，不会导致整个批次失败。
+
+## Migration test: rules-catalog
+
+新增 SMTP、IMAP、POP3、Memcached、MQTT、AMQP、Caddy 和 lighttpd 规则及样例；新增规则校验与目录命令。
+
+```bash
+go run ./cmd/rulecheck --rules rules/rules.json
+```

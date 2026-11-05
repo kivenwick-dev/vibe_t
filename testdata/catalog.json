@@ -1,0 +1,42 @@
+[
+  {
+    "ip": "192.0.2.1",
+    "port": 25,
+    "banner": "220 mail.example.test ESMTP Postfix"
+  },
+  {
+    "ip": "192.0.2.2",
+    "port": 143,
+    "banner": "* OK Dovecot ready."
+  },
+  {
+    "ip": "192.0.2.3",
+    "port": 110,
+    "banner": "+OK Dovecot ready."
+  },
+  {
+    "ip": "192.0.2.4",
+    "port": 11211,
+    "banner": "VERSION 1.6.22"
+  },
+  {
+    "ip": "192.0.2.5",
+    "port": 1883,
+    "banner": "mosquitto version 2.0.18"
+  },
+  {
+    "ip": "192.0.2.6",
+    "port": 5672,
+    "banner": "RabbitMQ/3.13.0"
+  },
+  {
+    "ip": "192.0.2.7",
+    "port": 80,
+    "banner": "HTTP/1.1 200 OK\r\nServer: Caddy"
+  },
+  {
+    "ip": "192.0.2.8",
+    "port": 80,
+    "banner": "HTTP/1.1 200 OK\r\nServer: lighttpd/1.4.73"
+  }
+]
