@@ -1,14 +1,80 @@
 {
   "port_hints": {
-    "21": {"protocol": "FTP", "product": "", "confidence": 0.35},
-    "22": {"protocol": "SSH", "product": "", "confidence": 0.35},
-    "80": {"protocol": "HTTP", "product": "", "confidence": 0.3},
-    "443": {"protocol": "HTTP", "product": "", "confidence": 0.3},
-    "3306": {"protocol": "MySQL", "product": "MySQL", "confidence": 0.55},
-    "6379": {"protocol": "Redis", "product": "Redis", "confidence": 0.7},
-    "8443": {"protocol": "HTTP", "product": "", "confidence": 0.3},
-    "8888": {"protocol": "HTTP", "product": "", "confidence": 0.3},
-    "8080": {"protocol": "HTTP", "product": "", "confidence": 0.3}
+    "21": {
+      "protocol": "FTP",
+      "product": "",
+      "confidence": 0.35
+    },
+    "22": {
+      "protocol": "SSH",
+      "product": "",
+      "confidence": 0.35
+    },
+    "80": {
+      "protocol": "HTTP",
+      "product": "",
+      "confidence": 0.3
+    },
+    "443": {
+      "protocol": "HTTP",
+      "product": "",
+      "confidence": 0.3
+    },
+    "3306": {
+      "protocol": "MySQL",
+      "product": "MySQL",
+      "confidence": 0.55
+    },
+    "6379": {
+      "protocol": "Redis",
+      "product": "Redis",
+      "confidence": 0.7
+    },
+    "8443": {
+      "protocol": "HTTP",
+      "product": "",
+      "confidence": 0.3
+    },
+    "8888": {
+      "protocol": "HTTP",
+      "product": "",
+      "confidence": 0.3
+    },
+    "8080": {
+      "protocol": "HTTP",
+      "product": "",
+      "confidence": 0.3
+    },
+    "25": {
+      "protocol": "SMTP",
+      "product": "",
+      "confidence": 0.25
+    },
+    "143": {
+      "protocol": "IMAP",
+      "product": "",
+      "confidence": 0.25
+    },
+    "110": {
+      "protocol": "POP3",
+      "product": "",
+      "confidence": 0.25
+    },
+    "11211": {
+      "protocol": "Memcached",
+      "product": "",
+      "confidence": 0.25
+    },
+    "1883": {
+      "protocol": "MQTT",
+      "product": "",
+      "confidence": 0.25
+    },
+    "5672": {
+      "protocol": "AMQP",
+      "product": "",
+      "confidence": 0.25
+    }
   },
   "rules": [
     {
@@ -125,6 +191,70 @@
       "product": "",
       "pattern": "(?i)^(?:HTTP/[12](?:\\.[01])?\\s+|[A-Z]+\\s+https?://)",
       "confidence": 0.75
+    },
+    {
+      "name": "postfix",
+      "protocol": "SMTP",
+      "product": "Postfix",
+      "pattern": "(?i)^220[^\\r\\n]*ESMTP Postfix",
+      "confidence": 0.92
+    },
+    {
+      "name": "dovecot",
+      "protocol": "IMAP",
+      "product": "Dovecot",
+      "pattern": "(?i)^\\* OK[^\\r\\n]*Dovecot",
+      "confidence": 0.92
+    },
+    {
+      "name": "pop3",
+      "protocol": "POP3",
+      "product": "Dovecot",
+      "pattern": "(?i)^\\+OK[^\\r\\n]*Dovecot",
+      "confidence": 0.92
+    },
+    {
+      "name": "memcached",
+      "protocol": "Memcached",
+      "product": "Memcached",
+      "pattern": "^VERSION ([0-9.]+)",
+      "confidence": 0.92,
+      "version_pattern": "^VERSION ([0-9.]+)",
+      "version_group": 1
+    },
+    {
+      "name": "mosquitto",
+      "protocol": "MQTT",
+      "product": "Mosquitto",
+      "pattern": "(?i)mosquitto version ([0-9.]+)",
+      "confidence": 0.92,
+      "version_pattern": "(?i)mosquitto version ([0-9.]+)",
+      "version_group": 1
+    },
+    {
+      "name": "rabbitmq",
+      "protocol": "AMQP",
+      "product": "RabbitMQ",
+      "pattern": "(?i)RabbitMQ/([0-9.]+)",
+      "confidence": 0.92,
+      "version_pattern": "(?i)RabbitMQ/([0-9.]+)",
+      "version_group": 1
+    },
+    {
+      "name": "caddy",
+      "protocol": "HTTP",
+      "product": "Caddy",
+      "pattern": "(?i)\\bServer:\\s*Caddy\\b",
+      "confidence": 0.92
+    },
+    {
+      "name": "lighttpd",
+      "protocol": "HTTP",
+      "product": "lighttpd",
+      "pattern": "(?i)\\bServer:\\s*lighttpd/([0-9.]+)",
+      "confidence": 0.92,
+      "version_pattern": "(?i)\\bServer:\\s*lighttpd/([0-9.]+)",
+      "version_group": 1
     }
   ]
 }
