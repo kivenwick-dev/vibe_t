@@ -6,7 +6,6 @@ import (
 	"os"
 	"regexp"
 	"sort"
-	"strings"
 
 	"banner-fingerprint/internal/model"
 )
@@ -99,38 +98,7 @@ func Load(path string) (*Engine, error) {
 }
 
 func (e *Engine) Identify(input model.BannerInput) model.FingerprintResult {
-	result := model.FingerprintResult{
-		IP:         input.IP,
-		Port:       input.Port,
-		Protocol:   "unknown",
-		Confidence: 0,
-	}
-	banner := strings.TrimSpace(input.Banner)
-	for _, rule := range e.rules {
-		if len(rule.Ports) > 0 && !containsPort(rule.Ports, input.Port) {
-			continue
-		}
-		if !rule.match.MatchString(banner) {
-			continue
-		}
-		result.Protocol = rule.Protocol
-		result.Product = rule.Product
-		result.Confidence = clamp(rule.Confidence)
-		if rule.versionMatch != nil {
-			result.Version = capture(rule.versionMatch, banner, rule.VersionGroup)
-		}
-		if rule.osMatch != nil {
-			result.OSHint = capture(rule.osMatch, banner, rule.OSGroup)
-		}
-		return result
-	}
-
-	if hint, ok := e.hints[input.Port]; ok {
-		result.Protocol = hint.Protocol
-		result.Product = hint.Product
-		result.Confidence = clamp(hint.Confidence)
-	}
-	return result
+	return e.Explain(input).Result
 }
 
 func containsPort(ports []int, wanted int) bool {
