@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"banner-fingerprint/internal/codec"
 	"banner-fingerprint/internal/model"
 )
 
@@ -19,15 +20,22 @@ func main() {
 	server := flag.String("server", "http://localhost:8080", "fingerprint server URL")
 	inputPath := flag.String("input", "-", "input JSON file, or - for stdin")
 	pretty := flag.Bool("pretty", true, "pretty-print response")
+	inputFormat := flag.String("input-format", "json", "input format: json, jsonl, csv")
+	outputFormat := flag.String("output-format", "json", "output format: json, jsonl, csv")
 	flag.Parse()
+	switch *outputFormat {
+	case "json", "jsonl", "csv":
+	default:
+		fatal(fmt.Errorf("unsupported output format %q", *outputFormat))
+	}
 
 	data, err := readInput(*inputPath)
 	if err != nil {
 		fatal(err)
 	}
-	var inputs []model.BannerInput
-	if err := json.Unmarshal(data, &inputs); err != nil {
-		fatal(fmt.Errorf("decode input JSON: %w", err))
+	inputs, err := codec.Decode(bytes.NewReader(data), *inputFormat)
+	if err != nil {
+		fatal(fmt.Errorf("decode input: %w", err))
 	}
 	payload, _ := json.Marshal(inputs)
 
@@ -44,17 +52,20 @@ func main() {
 		fatal(fmt.Errorf("request server: %w", err))
 	}
 	defer response.Body.Close()
-	body, _ := io.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		fatal(fmt.Errorf("read response: %w", err))
+	}
 	if response.StatusCode < 200 || response.StatusCode >= 300 {
 		fatal(fmt.Errorf("server returned %s: %s", response.Status, bytes.TrimSpace(body)))
 	}
-	if *pretty {
-		var output bytes.Buffer
-		if err := json.Indent(&output, body, "", "  "); err == nil {
-			body = output.Bytes()
-		}
+	var results []model.FingerprintResult
+	if err := json.Unmarshal(body, &results); err != nil {
+		fatal(fmt.Errorf("decode response: %w", err))
 	}
-	fmt.Println(string(bytes.TrimSpace(body)))
+	if err := codec.Encode(os.Stdout, results, *outputFormat, *pretty); err != nil {
+		fatal(err)
+	}
 }
 
 func readInput(path string) ([]byte, error) {
