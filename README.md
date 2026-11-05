@@ -62,3 +62,11 @@ curl -X POST http://localhost:8080/fingerprint \
 ```
 
 无法识别的输入会返回 `protocol: "unknown"`、空产品和版本字段以及 `confidence: 0`，不会导致整个批次失败。
+
+## Migration test: engine-explain
+
+重构识别引擎，输出所有匹配候选、选中规则以及 rule / port_hint / unknown 来源；新增离线解释命令。
+
+```bash
+go run ./cmd/explain --input testdata/explain.json
+```
