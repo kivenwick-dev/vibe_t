@@ -62,3 +62,11 @@ curl -X POST http://localhost:8080/fingerprint \
 ```
 
 无法识别的输入会返回 `protocol: "unknown"`、空产品和版本字段以及 `confidence: 0`，不会导致整个批次失败。
+
+## Migration test: api-summary
+
+新增批量汇总 API，统计协议、平均置信度、唯一主机与未知结果，并校验输入和尾随 JSON。
+
+```bash
+curl -X POST http://localhost:8080/fingerprint/summary -H 'Content-Type: application/json' --data @testdata/sample.json
+```
