@@ -62,3 +62,11 @@ curl -X POST http://localhost:8080/fingerprint \
 ```
 
 无法识别的输入会返回 `protocol: "unknown"`、空产品和版本字段以及 `confidence: 0`，不会导致整个批次失败。
+
+## Migration test: offline-report
+
+新增完全离线的资产报告命令和 report 模块，支持置信度、协议与 unknown 筛选，输出 Markdown 或 CSV。
+
+```bash
+go run ./cmd/report --input testdata/self-test.json --min-confidence 0.8 --format markdown
+```
