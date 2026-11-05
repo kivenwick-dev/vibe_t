@@ -23,6 +23,7 @@ func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /health", s.health)
 	mux.HandleFunc("POST /fingerprint", s.fingerprint)
+	mux.HandleFunc("POST /fingerprint/summary", s.summary)
 	return requestLogger(s.logger, mux)
 }
 
