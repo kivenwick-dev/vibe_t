@@ -62,3 +62,11 @@ curl -X POST http://localhost:8080/fingerprint \
 ```
 
 无法识别的输入会返回 `protocol: "unknown"`、空产品和版本字段以及 `confidence: 0`，不会导致整个批次失败。
+
+## Migration test: client-formats
+
+客户端增加 CSV / JSONL 导入导出，保留 JSON 默认行为，并新增多格式编解码模块与样例。
+
+```bash
+go run ./cmd/client --input testdata/client.csv --input-format csv --output-format jsonl
+```
